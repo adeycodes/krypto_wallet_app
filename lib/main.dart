@@ -297,6 +297,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
 // ============ ONBOARDING SCREEN ============
 
+// ============ ONBOARDING SCREEN ============
+
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -344,9 +346,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ],
                 ),
               ),
-              _buildPageIndicator(),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: _buildPageIndicator(),
+              ),
               _buildButtons(),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -355,46 +360,60 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildPage({required IconData icon, required String title, required String description}) {
-    return Padding(
-      padding: const EdgeInsets.all(40.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 300,
-            height: 300,
-            decoration: BoxDecoration(
-              color: const Color(0xFF9EDED6).withOpacity(0.2),
-              borderRadius: BorderRadius.circular(20),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableHeight = constraints.maxHeight;
+        final iconSize = (availableHeight * 0.35).clamp(150.0, 250.0);
+        
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: availableHeight,
             ),
-            child: Icon(
-              icon,
-              size: 120,
-              color: const Color(0xFF00D9FF),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: iconSize,
+                    height: iconSize,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF9EDED6).withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(
+                      icon,
+                      size: iconSize * 0.4,
+                      color: const Color(0xFF00D9FF),
+                    ),
+                  ),
+                  SizedBox(height: availableHeight * 0.08),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: (availableHeight * 0.045).clamp(24.0, 32.0),
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFFFFFFFF),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: availableHeight * 0.03),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      fontSize: (availableHeight * 0.022).clamp(14.0, 16.0),
+                      color: const Color(0xFF94A3B8),
+                      height: 1.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 60),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 32,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFFFFFFFF),
-            ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 20),
-          Text(
-            description,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Color(0xFF94A3B8),
-              height: 1.5,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -421,8 +440,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildButtons() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(
             width: double.infinity,
@@ -1418,7 +1438,7 @@ class WalletScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF8B5CF6), Color(0xFFA78BFA)],
+                      colors: [Color.fromARGB(255, 165, 127, 252), Color(0xFFA78BFA)],
                     ),
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -1456,14 +1476,14 @@ class WalletScreen extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.arrow_upward,
-                            color: Color(0xFF10B981),
+                            color: Color.fromARGB(255, 29, 247, 174),
                             size: 16,
                           ),
                           SizedBox(width: 4),
                           Text(
                             '+24.5% This month',
                             style: TextStyle(
-                              color: Color(0xFF10B981),
+                              color: Color.fromARGB(255, 34, 243, 173),
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                             ),
